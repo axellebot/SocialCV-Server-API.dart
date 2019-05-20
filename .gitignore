@@ -178,4 +178,21 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/dart,linux,macos,windows,webstorm
 
 # Custom
-.idea
+
+.idea/
+
+.buildlog
+.pub/
+build/
+packages
+.packages
+*.dart.js
+*.js_
+*.js.deps
+*.js.map
+workspace.xml
+Dart_Packages.xml
+.DS_Store
+*.aqueduct.pid
+
+config.yaml
