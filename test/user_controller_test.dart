@@ -1,4 +1,4 @@
-import 'package:social_cv_api/model/user.dart';
+import 'package:social_cv_api/model/user_model.dart';
 
 import 'harness/app.dart';
 
