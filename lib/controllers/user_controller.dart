@@ -1,5 +1,4 @@
-import '../model/user.dart';
-import '../social_cv_api.dart';
+import 'package:social_cv_api/social_cv_api.dart';
 
 class UserController extends ResourceController {
   UserController(this.context, this.authServer);

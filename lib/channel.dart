@@ -1,9 +1,6 @@
-import 'controller/identity_controller.dart';
-import 'controller/register_controller.dart';
-import 'controller/user_controller.dart';
-import 'model/user.dart';
+import 'package:social_cv_api/social_cv_api.dart';
+
 import 'utility/html_template.dart';
-import 'social_cv_api.dart';
 
 /// This type initializes an application.
 ///
