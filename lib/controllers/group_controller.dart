@@ -1,42 +1,42 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-class UserController extends ResourceController {
-  UserController(this.context, this.authServer);
+class GroupController extends ResourceController {
+  GroupController(this.context, this.authServer);
 
   final ManagedContext context;
   final AuthServer authServer;
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<User>(context);
-    final users = await query.fetch();
-    return Response.ok(users);
+    final query = Query<Group>(context);
+    final groups = await query.fetch();
+    return Response.ok(groups);
   }
 
-  @Operation.get("userId")
-  Future<Response> getUser(@Bind.path("userId") int id) async {
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
+  @Operation.get("groupId")
+  Future<Response> getGroup(@Bind.path("groupId") int id) async {
+    final query = Query<Group>(context)..where((o) => o.id).equalTo(id);
     final u = await query.fetchOne();
     if (u == null) {
       return Response.notFound();
     }
 
     if (request.authorization.ownerID != id) {
-      // Filter out stuff for non-owner of user
+      // Filter out stuff for non-owner of group
     }
 
     return Response.ok(u);
   }
 
-  @Operation.put("userId")
-  Future<Response> updateUser(
-      @Bind.path("userId") int id, @Bind.body() User user) async {
+  @Operation.put("groupId")
+  Future<Response> updateGroup(
+      @Bind.path("groupId") int id, @Bind.body() Group group) async {
     if (request.authorization.ownerID != id) {
       return Response.unauthorized();
     }
 
-    final query = Query<User>(context)
-      ..values = user
+    final query = Query<Group>(context)
+      ..values = group
       ..where((o) => o.id).equalTo(id);
 
     final u = await query.updateOne();
@@ -47,13 +47,13 @@ class UserController extends ResourceController {
     return Response.ok(u);
   }
 
-  @Operation.delete("userId")
-  Future<Response> deleteUser(@Bind.path("userId") int id) async {
+  @Operation.delete("groupId")
+  Future<Response> deleteGroup(@Bind.path("groupId") int id) async {
     if (request.authorization.ownerID != id) {
       return Response.unauthorized();
     }
 
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
+    final query = Query<Group>(context)..where((o) => o.id).equalTo(id);
     await authServer.revokeAllGrantsForResourceOwner(id);
     await query.delete();
 
