@@ -4,10 +4,10 @@ class Group extends BaseManagedObject<_Group> implements _Group {}
 
 @Table(name: 'groups')
 class _Group extends BaseTableDefinition {
-  @uidPrimaryKey
-  String id;
+  @primaryKey
+  int id;
 
-  @Column()
+  @Column(name:'type')
   String type;
 
   ManagedSet<PartGroupJoin> partGroups;

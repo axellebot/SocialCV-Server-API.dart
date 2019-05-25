@@ -4,10 +4,10 @@ class Part extends BaseManagedObject<_Part> implements _Part {}
 
 @Table(name: 'parts')
 class _Part extends BaseTableDefinition {
-  @uidPrimaryKey
-  String id;
+  @primaryKey
+  int id;
 
-  @Column()
+  @Column(name:'type')
   String type;
 
   ManagedSet<ProfilePartJoin> profileParts;

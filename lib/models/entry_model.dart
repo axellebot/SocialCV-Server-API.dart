@@ -4,10 +4,10 @@ class Entry extends BaseManagedObject<_Entry> implements _Entry {}
 
 @Table(name: 'entries')
 class _Entry extends BaseTableDefinition {
-  @uidPrimaryKey
-  String id;
+  @primaryKey
+  int id;
 
-  @Column()
+  @Column(name:'type')
   String type;
 
   ManagedSet<GroupEntryJoin> groupEntries;

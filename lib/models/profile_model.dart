@@ -4,13 +4,13 @@ class Profile extends BaseManagedObject<_Profile> implements _Profile {}
 
 @Table(name: 'profiles')
 class _Profile extends BaseTableDefinition {
-  @uidPrimaryKey
-  String id;
+  @primaryKey
+  int id;
 
-  @Column()
+  @Column(name: 'title')
   String title;
 
-  @Column()
+  @Column(name: 'subtitle')
   String subtitle;
 
   ManagedSet<ProfilePartJoin> profileParts;

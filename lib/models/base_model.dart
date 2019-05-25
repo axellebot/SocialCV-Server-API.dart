@@ -1,10 +1,5 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-const Column uidPrimaryKey = Column(
-    primaryKey: true,
-    databaseType: ManagedPropertyType.string,
-    validators: [Validate.constant()]);
-
 class BaseManagedObject<T extends BaseTableDefinition>
     extends ManagedObject<T> {
   @override
@@ -21,12 +16,12 @@ class BaseManagedObject<T extends BaseTableDefinition>
 }
 
 class BaseTableDefinition {
-  @Column()
+  @Column(name: 'updated_at')
   DateTime updatedAt;
 
-  @Column()
+  @Column(name: 'created_at')
   DateTime createdAt;
 
-  @Column()
+  @Column(name: 'version')
   int version;
 }
