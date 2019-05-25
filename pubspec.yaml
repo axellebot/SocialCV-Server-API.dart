@@ -11,8 +11,12 @@ dependencies:
     git:
       url: https://github.com/axellebot/aqueduct
       path: aqueduct
-      ref: master
+      ref: custom
 
 dev_dependencies:
   test: ^1.3.0
-  #aqueduct_test: ^1.0.1
+  aqueduct_test: #^1.0.1
+    git:
+      url: https://github.com/axellebot/aqueduct
+      path: aqueduct_test
+      ref: custom

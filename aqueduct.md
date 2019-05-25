@@ -1,5 +1,13 @@
 # social_cv_api
 
+## Global config
+Active changed aqueduct
+
+```
+git clone https://github.com/axellebot/aquecduct.git
+pub global activate ./aqueduct/aqueduct
+```
+
 ## Database
 
 You will need a local database for testing, and another database for running the application locally. The behavior and configuration of these databases are documented here: http://aqueduct.io/docs/testing/mixins/.

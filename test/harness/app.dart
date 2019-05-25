@@ -1,6 +1,5 @@
 import 'package:social_cv_api/models/user_model.dart';
 import 'package:social_cv_api/social_cv_api.dart';
-import 'package:aqueduct_test/aqueduct_test.dart';
 
 export 'package:social_cv_api/social_cv_api.dart';
 export 'package:aqueduct_test/aqueduct_test.dart';
