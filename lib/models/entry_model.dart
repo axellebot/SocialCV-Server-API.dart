@@ -7,10 +7,13 @@ class _Entry extends BaseTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'type')
-  String type;
+  @Column(name:'tags')
+  Document tags;
 
   ManagedSet<GroupEntryJoin> groupEntries;
+
+  @Column(name:'type')
+  String type;
 
   @Relate(#entries)
   User owner;

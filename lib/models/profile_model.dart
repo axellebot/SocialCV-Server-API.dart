@@ -13,6 +13,9 @@ class _Profile extends BaseTableDefinition {
   @Column(name: 'subtitle')
   String subtitle;
 
+  @Column(name:'tags')
+  Document tags;
+
   ManagedSet<ProfilePartJoin> profileParts;
 
   @Relate(#profiles)

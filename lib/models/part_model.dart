@@ -7,12 +7,15 @@ class _Part extends BaseTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'type')
-  String type;
+  @Column(name:'tags')
+  Document tags;
 
   ManagedSet<ProfilePartJoin> profileParts;
 
   ManagedSet<PartGroupJoin> partGroups;
+
+  @Column(name:'type')
+  String type;
 
   @Relate(#parts)
   User owner;

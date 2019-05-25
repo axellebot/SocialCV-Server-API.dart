@@ -7,12 +7,15 @@ class _Group extends BaseTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'type')
-  String type;
+  @Column(name:'tags')
+  Document tags;
 
   ManagedSet<PartGroupJoin> partGroups;
 
   ManagedSet<GroupEntryJoin> groupEntries;
+
+  @Column(name:'type')
+  String type;
 
   @Relate(#groups)
   User owner;
