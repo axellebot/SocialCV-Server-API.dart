@@ -12,7 +12,11 @@ export 'package:aqueduct/managed_auth.dart';
 export 'channel.dart';
 
 /// Controllers
+export 'controllers/entry_controller.dart';
+export 'controllers/group_controller.dart';
 export 'controllers/identity_controller.dart';
+export 'controllers/part_controller.dart';
+export 'controllers/profile_controller.dart';
 export 'controllers/register_controller.dart';
 export 'controllers/user_controller.dart';
 

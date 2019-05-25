@@ -62,9 +62,33 @@ class SocialCvApiChannel extends ApplicationChannel
 
     /* Gets all users or one specific user by id */
     router
-        .route("/users/[:id]")
+        .route("/users/[:userId]")
         .link(() => Authorizer.bearer(authServer))
         .link(() => UserController(context, authServer));
+
+    /* Gets all profiles or one specific profile by id */
+    router
+        .route("/profiles/[:profileId]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => ProfileController(context, authServer));
+
+    /* Gets all parts or one specific part by id */
+    router
+        .route("/parts/[:partId]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => PartController(context, authServer));
+
+    /* Gets all groups or one specific group by id */
+    router
+        .route("/groups/[:groupId]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => GroupController(context, authServer));
+
+    /* Gets all entries or one specific entry by id */
+    router
+        .route("/entries/[:entryId]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => EntryController(context, authServer));
 
     return router;
   }
