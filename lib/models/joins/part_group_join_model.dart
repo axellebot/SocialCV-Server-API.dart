@@ -8,9 +8,9 @@ class _PartGroupJoin {
   @primaryKey
   int id;
 
-  @Relate(#partGroups)
+  @Relate(#partsGroups)
   Part part;
 
-  @Relate(#partGroups)
+  @Relate(#partsGroups)
   Group group;
 }

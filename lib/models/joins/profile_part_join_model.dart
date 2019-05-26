@@ -8,9 +8,9 @@ class _ProfilePartJoin {
   @primaryKey
   int id;
 
-  @Relate(#profileParts)
+  @Relate(#profilesParts)
   Profile profile;
 
-  @Relate(#profileParts)
+  @Relate(#profilesParts)
   Part part;
 }

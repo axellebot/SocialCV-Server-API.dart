@@ -8,9 +8,9 @@ class _GroupEntryJoin {
   @primaryKey
   int id;
 
-  @Relate(#groupEntries)
+  @Relate(#groupsEntries)
   Group group;
 
-  @Relate(#groupEntries)
+  @Relate(#groupsEntries)
   Entry entry;
 }

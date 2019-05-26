@@ -60,3 +60,22 @@ class GroupController extends ResourceController {
     return Response.ok(null);
   }
 }
+
+class GroupEntriesController extends ResourceController {
+  GroupEntriesController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("groupId")
+  Future<Response> getEntries(@Bind.path("groupId") int groupId) async {
+    // TODO: filter public
+    final query = Query<Group>(context)
+      ..where((group) => group.id == groupId)
+      ..join(set: (group) => group.groupsEntries)
+          .join(object: (groupEntry) => groupEntry.entry);
+
+    final entries = await query.fetch();
+    return Response.ok(entries);
+  }
+}

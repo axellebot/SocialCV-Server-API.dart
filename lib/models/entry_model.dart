@@ -10,7 +10,7 @@ class _Entry extends BaseTableDefinition {
   @Column(name:'tags')
   Document tags;
 
-  ManagedSet<GroupEntryJoin> groupEntries;
+  ManagedSet<GroupEntryJoin> groupsEntries;
 
   @Column(name:'type')
   String type;

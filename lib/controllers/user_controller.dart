@@ -14,14 +14,14 @@ class UserController extends ResourceController {
   }
 
   @Operation.get("userId")
-  Future<Response> getUser(@Bind.path("userId") int id) async {
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
+  Future<Response> getUser(@Bind.path("userId") int userId) async {
+    final query = Query<User>(context)..where((o) => o.id).equalTo(userId);
     final u = await query.fetchOne();
     if (u == null) {
       return Response.notFound();
     }
 
-    if (request.authorization.ownerID != id) {
+    if (request.authorization.ownerID != userId) {
       // Filter out stuff for non-owner of user
     }
 
@@ -30,14 +30,14 @@ class UserController extends ResourceController {
 
   @Operation.put("userId")
   Future<Response> updateUser(
-      @Bind.path("userId") int id, @Bind.body() User user) async {
-    if (request.authorization.ownerID != id) {
+      @Bind.path("userId") int userId, @Bind.body() User user) async {
+    if (request.authorization.ownerID != userId) {
       return Response.unauthorized();
     }
 
     final query = Query<User>(context)
       ..values = user
-      ..where((o) => o.id).equalTo(id);
+      ..where((o) => o.id).equalTo(userId);
 
     final u = await query.updateOne();
     if (u == null) {
@@ -48,15 +48,75 @@ class UserController extends ResourceController {
   }
 
   @Operation.delete("userId")
-  Future<Response> deleteUser(@Bind.path("userId") int id) async {
-    if (request.authorization.ownerID != id) {
+  Future<Response> deleteUser(@Bind.path("userId") int userId) async {
+    if (request.authorization.ownerID != userId) {
       return Response.unauthorized();
     }
 
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
-    await authServer.revokeAllGrantsForResourceOwner(id);
+    final query = Query<User>(context)..where((o) => o.id).equalTo(userId);
+    await authServer.revokeAllGrantsForResourceOwner(userId);
     await query.delete();
 
     return Response.ok(null);
+  }
+}
+
+class UserProfilesController extends ResourceController {
+  UserProfilesController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("userId")
+  Future<Response> getProfiles(@Bind.path("userId") int userId) async {
+    final query = Query<Profile>(context)..where((p) => p.owner.id == userId);
+
+    final profiles = await query.fetch();
+    return Response.ok(profiles);
+  }
+}
+
+class UserPartsController extends ResourceController {
+  UserPartsController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("userId")
+  Future<Response> getParts(@Bind.path("userId") int userId) async {
+    final query = Query<Part>(context)..where((p) => p.owner.id == userId);
+
+    final parts = await query.fetch();
+    return Response.ok(parts);
+  }
+}
+
+class UserGroupsController extends ResourceController {
+  UserGroupsController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("userId")
+  Future<Response> getGroups(@Bind.path("userId") int userId) async {
+    final query = Query<Group>(context)..where((g) => g.owner.id == userId);
+
+    final groups = await query.fetch();
+    return Response.ok(groups);
+  }
+}
+
+class UserEntriesController extends ResourceController {
+  UserEntriesController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("userId")
+  Future<Response> getEntries(@Bind.path("userId") int userId) async {
+    final query = Query<Entry>(context)..where((e) => e.owner.id == userId);
+
+    final entries = await query.fetch();
+    return Response.ok(entries);
   }
 }

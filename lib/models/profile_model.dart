@@ -16,7 +16,7 @@ class _Profile extends BaseTableDefinition {
   @Column(name:'tags')
   Document tags;
 
-  ManagedSet<ProfilePartJoin> profileParts;
+  ManagedSet<ProfilePartJoin> profilesParts;
 
   @Relate(#profiles)
   User owner;

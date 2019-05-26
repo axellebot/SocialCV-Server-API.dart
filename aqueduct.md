@@ -5,7 +5,7 @@ Active changed aqueduct
 
 ```
 git clone https://github.com/axellebot/aquecduct.git
-pub global activate ./aqueduct/aqueduct
+pub global activate --source=path ./aqueduct/aqueduct
 ```
 
 ## Database

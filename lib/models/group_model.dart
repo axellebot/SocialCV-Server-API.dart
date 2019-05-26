@@ -10,9 +10,9 @@ class _Group extends BaseTableDefinition {
   @Column(name:'tags')
   Document tags;
 
-  ManagedSet<PartGroupJoin> partGroups;
+  ManagedSet<PartGroupJoin> partsGroups;
 
-  ManagedSet<GroupEntryJoin> groupEntries;
+  ManagedSet<GroupEntryJoin> groupsEntries;
 
   @Column(name:'type')
   String type;

@@ -54,11 +54,35 @@ class SocialCvApiChannel extends ApplicationChannel
         .link(() => Authorizer.basic(authServer))
         .link(() => RegisterController(context, authServer));
 
-    /* Gets profile for user with bearer token */
+    /* Get identity for user with bearer token */
     router
         .route("/me")
         .link(() => Authorizer.bearer(authServer))
         .link(() => IdentityController(context));
+
+    /* Get profiles for user with bearer token */
+    router
+        .route("/me/profiles")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => IdentityProfilesController(context));
+
+    /* Get parts for user with bearer token */
+    router
+        .route("/me/parts")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => IdentityPartsController(context));
+
+    /* Get groups for user with bearer token */
+    router
+        .route("/me/groups")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => IdentityGroupsController(context));
+
+    /* Get entries for user with bearer token */
+    router
+        .route("/me/entries")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => IdentityEntriesController(context));
 
     /* Gets all users or one specific user by id */
     router
@@ -66,11 +90,41 @@ class SocialCvApiChannel extends ApplicationChannel
         .link(() => Authorizer.bearer(authServer))
         .link(() => UserController(context, authServer));
 
+    /* Gets all profiles of one specific user by id */
+    router
+        .route("/users/:userId/profiles")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserProfilesController(context, authServer));
+
+    /* Gets all parts of one specific user by id */
+    router
+        .route("/users/:userId/parts")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserPartsController(context, authServer));
+
+    /* Gets all groups of one specific user by id */
+    router
+        .route("/users/:userId/groups")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserGroupsController(context, authServer));
+
+    /* Gets all entries of one specific user by id */
+    router
+        .route("/users/:userId/entries")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserEntriesController(context, authServer));
+
     /* Gets all profiles or one specific profile by id */
     router
         .route("/profiles/[:profileId]")
         .link(() => Authorizer.bearer(authServer))
         .link(() => ProfileController(context, authServer));
+
+    /* Gets all parts of one specific profile by id */
+    router
+        .route("/profiles/:profileId/parts")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => ProfilePartsController(context, authServer));
 
     /* Gets all parts or one specific part by id */
     router
@@ -78,11 +132,23 @@ class SocialCvApiChannel extends ApplicationChannel
         .link(() => Authorizer.bearer(authServer))
         .link(() => PartController(context, authServer));
 
+    /* Gets all groups of one specific part by id */
+    router
+        .route("/parts/:partId/groups")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => PartGroupsController(context, authServer));
+
     /* Gets all groups or one specific group by id */
     router
         .route("/groups/[:groupId]")
         .link(() => Authorizer.bearer(authServer))
         .link(() => GroupController(context, authServer));
+
+    /* Gets all entries of one specific group by id */
+    router
+        .route("/groups/:groupId/entries")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => GroupEntriesController(context, authServer));
 
     /* Gets all entries or one specific entry by id */
     router

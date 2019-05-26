@@ -10,9 +10,9 @@ class _Part extends BaseTableDefinition {
   @Column(name:'tags')
   Document tags;
 
-  ManagedSet<ProfilePartJoin> profileParts;
+  ManagedSet<ProfilePartJoin> profilesParts;
 
-  ManagedSet<PartGroupJoin> partGroups;
+  ManagedSet<PartGroupJoin> partsGroups;
 
   @Column(name:'type')
   String type;

@@ -60,3 +60,22 @@ class ProfileController extends ResourceController {
     return Response.ok(null);
   }
 }
+
+class ProfilePartsController extends ResourceController {
+  ProfilePartsController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("profileId")
+  Future<Response> getParts(@Bind.path("profileId") int profileId) async {
+    // TODO: filter public
+    final query = Query<Profile>(context)
+      ..where((profile) => profile.id == profileId)
+      ..join(set: (profile) => profile.profilesParts)
+          .join(object: (profilePart) => profilePart.part);
+
+    final parts = await query.fetch();
+    return Response.ok(parts);
+  }
+}

@@ -60,3 +60,22 @@ class PartController extends ResourceController {
     return Response.ok(null);
   }
 }
+
+class PartGroupsController extends ResourceController {
+  PartGroupsController(this.context, this.authServer);
+
+  final ManagedContext context;
+  final AuthServer authServer;
+
+  @Operation.get("partId")
+  Future<Response> getGroups(@Bind.path("partId") int partId) async {
+    // TODO: filter public
+    final query = Query<Part>(context)
+      ..where((part) => part.id == partId)
+      ..join(set: (part) => part.partsGroups)
+          .join(object: (partGroup) => partGroup.group);
+
+    final groups = await query.fetch();
+    return Response.ok(groups);
+  }
+}
