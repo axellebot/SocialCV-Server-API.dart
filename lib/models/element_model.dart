@@ -1,6 +1,11 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-class BaseManagedObject<T extends BaseTableDefinition>
+enum ElementPresentation {
+  private,
+  public,
+}
+
+class ElementManagedObject<T extends ElementTableDefinition>
     extends ManagedObject<T> {
   @override
   void willInsert() {
@@ -15,7 +20,10 @@ class BaseManagedObject<T extends BaseTableDefinition>
   }
 }
 
-class BaseTableDefinition {
+class ElementTableDefinition {
+  @Column(name: 'presentation')
+  ElementPresentation presentation;
+
   @Column(name: 'updated_at')
   DateTime updatedAt;
 

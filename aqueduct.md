@@ -1,11 +1,18 @@
 # social_cv_api
 
-## Global config
-Active changed aqueduct
+## Global Help
+### Active changed aqueduct
 
 ```
 git clone https://github.com/axellebot/aquecduct.git
 pub global activate --source=path ./aqueduct/aqueduct
+```
+
+### Generate document
+```
+aqueduct document > ./documents/openAPI.json
+
+aqueduct document client --title Social CV
 ```
 
 ## Database

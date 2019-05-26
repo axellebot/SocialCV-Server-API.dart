@@ -1,9 +1,9 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-class Entry extends BaseManagedObject<_Entry> implements _Entry {}
+class Entry extends ElementManagedObject<_Entry> implements _Entry {}
 
 @Table(name: 'entries')
-class _Entry extends BaseTableDefinition {
+class _Entry extends ElementTableDefinition {
   @primaryKey
   int id;
 

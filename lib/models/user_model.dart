@@ -1,14 +1,13 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-class User extends BaseManagedObject<_User>
+class User extends ManagedObject<_User>
     implements _User, ManagedAuthResourceOwner<_User> {
   @Serialize(input: true, output: false)
   String password;
 }
 
 @Table(name: 'users')
-class _User extends BaseTableDefinition
-    implements ResourceOwnerTableDefinition {
+class _User implements ResourceOwnerTableDefinition {
   @override
   @primaryKey
   int id;

@@ -1604,23 +1604,6 @@
             "type": "string",
             "nullable": false
           },
-          "updated_at": {
-            "title": "updated_at",
-            "type": "string",
-            "format": "date-time",
-            "nullable": false
-          },
-          "created_at": {
-            "title": "created_at",
-            "type": "string",
-            "format": "date-time",
-            "nullable": false
-          },
-          "version": {
-            "title": "version",
-            "type": "integer",
-            "nullable": false
-          },
           "tokens": {
             "type": "array",
             "items": {
@@ -1796,6 +1779,15 @@
             "type": "string",
             "nullable": false
           },
+          "presentation": {
+            "title": "presentation",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "type": "string",
+            "nullable": false
+          },
           "updated_at": {
             "title": "updated_at",
             "type": "string",
@@ -1851,6 +1843,15 @@
           },
           "type": {
             "title": "type",
+            "type": "string",
+            "nullable": false
+          },
+          "presentation": {
+            "title": "presentation",
+            "enum": [
+              "private",
+              "public"
+            ],
             "type": "string",
             "nullable": false
           },
@@ -2013,6 +2014,15 @@
             "type": "string",
             "nullable": false
           },
+          "presentation": {
+            "title": "presentation",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "type": "string",
+            "nullable": false
+          },
           "updated_at": {
             "title": "updated_at",
             "type": "string",
@@ -2082,6 +2092,15 @@
             "title": "tags",
             "type": "object",
             "additionalProperties": true,
+            "nullable": false
+          },
+          "presentation": {
+            "title": "presentation",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "type": "string",
             "nullable": false
           },
           "updated_at": {
@@ -2157,23 +2176,6 @@
           "last_name": {
             "title": "last_name",
             "type": "string",
-            "nullable": false
-          },
-          "updated_at": {
-            "title": "updated_at",
-            "type": "string",
-            "format": "date-time",
-            "nullable": false
-          },
-          "created_at": {
-            "title": "created_at",
-            "type": "string",
-            "format": "date-time",
-            "nullable": false
-          },
-          "version": {
-            "title": "version",
-            "type": "integer",
             "nullable": false
           },
           "tokens": {

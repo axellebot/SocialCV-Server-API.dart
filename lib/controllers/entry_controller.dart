@@ -8,55 +8,59 @@ class EntryController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<Entry>(context);
+    final query = Query<Entry>(context)
+      // Restrict to public and authenticated user's entries
+      ..where((e) =>
+          e.presentation == ElementPresentation.public ||
+          e.owner.id == request.authorization.ownerID);
+
     final entries = await query.fetch();
     return Response.ok(entries);
   }
 
   @Operation.get("entryId")
-  Future<Response> getEntry(@Bind.path("entryId") int id) async {
-    final query = Query<Entry>(context)..where((o) => o.id).equalTo(id);
+  Future<Response> getEntry(@Bind.path("entryId") int entryId) async {
+    final query = Query<Entry>(context)
+      ..where((e) => e.id == entryId)
+      // Restrict to public or authenticated user's entry
+      ..where((e) =>
+          e.presentation == ElementPresentation.public ||
+          e.owner.id == request.authorization.ownerID);
+
     final u = await query.fetchOne();
     if (u == null) {
       return Response.notFound();
     }
-
-    if (request.authorization.ownerID != id) {
-      // Filter out stuff for non-owner of entry
-    }
-
     return Response.ok(u);
   }
 
   @Operation.put("entryId")
   Future<Response> updateEntry(
-      @Bind.path("entryId") int id, @Bind.body() Entry entry) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
-    }
-
+      @Bind.path("entryId") int entryId, @Bind.body() Entry entry) async {
     final query = Query<Entry>(context)
       ..values = entry
-      ..where((o) => o.id).equalTo(id);
+      ..where((e) => e.id == entryId)
+      // Restrict to authenticated user's entry
+      ..where((e) => e.owner.id == request.authorization.ownerID);
 
-    final u = await query.updateOne();
-    if (u == null) {
+    final updatedEntry = await query.updateOne();
+    if (updatedEntry == null) {
       return Response.notFound();
     }
-
-    return Response.ok(u);
+    return Response.ok(updatedEntry);
   }
 
   @Operation.delete("entryId")
-  Future<Response> deleteEntry(@Bind.path("entryId") int id) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
+  Future<Response> deleteEntry(@Bind.path("entryId") int entryId) async {
+    final query = Query<Entry>(context)
+      ..where((e) => e.id == entryId)
+      // Restrict to authenticated user's entry
+      ..where((e) => e.owner.id == request.authorization.ownerID);
+
+    final count = await query.delete();
+    if (count == 0) {
+      return Response.notFound();
     }
-
-    final query = Query<Entry>(context)..where((o) => o.id).equalTo(id);
-    await authServer.revokeAllGrantsForResourceOwner(id);
-    await query.delete();
-
     return Response.ok(null);
   }
 }

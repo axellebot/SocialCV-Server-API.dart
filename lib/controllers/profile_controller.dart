@@ -8,55 +8,59 @@ class ProfileController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<Profile>(context);
+    final query = Query<Profile>(context)
+      // Restrict to public and authenticated user's profiles
+      ..where((pr) =>
+          pr.presentation == ElementPresentation.public ||
+          pr.owner.id == request.authorization.ownerID);
+
     final profiles = await query.fetch();
     return Response.ok(profiles);
   }
 
   @Operation.get("profileId")
-  Future<Response> getProfile(@Bind.path("profileId") int id) async {
-    final query = Query<Profile>(context)..where((o) => o.id).equalTo(id);
-    final u = await query.fetchOne();
-    if (u == null) {
+  Future<Response> getProfile(@Bind.path("profileId") int profileId) async {
+    final query = Query<Profile>(context)
+      ..where((pr) => pr.id = profileId)
+      ..where((pr) =>
+          pr.presentation == ElementPresentation.public ||
+          pr.owner.id == request.authorization.ownerID);
+
+    final profile = await query.fetchOne();
+    if (profile == null) {
       return Response.notFound();
     }
 
-    if (request.authorization.ownerID != id) {
-      // Filter out stuff for non-owner of profile
-    }
-
-    return Response.ok(u);
+    return Response.ok(profile);
   }
 
   @Operation.put("profileId")
-  Future<Response> updateProfile(
-      @Bind.path("profileId") int id, @Bind.body() Profile profile) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
-    }
-
+  Future<Response> updateProfile(@Bind.path("profileId") int profileId,
+      @Bind.body() Profile profile) async {
     final query = Query<Profile>(context)
       ..values = profile
-      ..where((o) => o.id).equalTo(id);
+      ..where((pr) => pr.id == profileId)
+      // Restrict to authenticated user's profile
+      ..where((pr) => pr.owner.id == request.authorization.ownerID);
 
-    final u = await query.updateOne();
-    if (u == null) {
+    final updatedProfile = await query.updateOne();
+    if (updatedProfile == null) {
       return Response.notFound();
     }
-
-    return Response.ok(u);
+    return Response.ok(updatedProfile);
   }
 
   @Operation.delete("profileId")
-  Future<Response> deleteProfile(@Bind.path("profileId") int id) async {
-    if (request.authorization.ownerID != id) {
-      return Response.unauthorized();
+  Future<Response> deleteProfile(@Bind.path("profileId") int profileId) async {
+    final query = Query<Profile>(context)
+      ..where((pr) => pr.id == profileId)
+      // Restrict to authenticated user's profile
+      ..where((pr) => pr.owner.id == request.authorization.ownerID);
+
+    final count = await query.delete();
+    if (count == 0) {
+      return Response.notFound();
     }
-
-    final query = Query<Profile>(context)..where((o) => o.id).equalTo(id);
-    await authServer.revokeAllGrantsForResourceOwner(id);
-    await query.delete();
-
     return Response.ok(null);
   }
 }
@@ -69,11 +73,18 @@ class ProfilePartsController extends ResourceController {
 
   @Operation.get("profileId")
   Future<Response> getParts(@Bind.path("profileId") int profileId) async {
-    // TODO: filter public
     final query = Query<Profile>(context)
-      ..where((profile) => profile.id == profileId)
-      ..join(set: (profile) => profile.profilesParts)
-          .join(object: (profilePart) => profilePart.part);
+      ..where((pr) => pr.id == profileId)
+      // Restrict to public or authenticated user's profile
+      ..where((pr) =>
+          pr.presentation == ElementPresentation.public ||
+          pr.owner.id == request.authorization.ownerID)
+      ..join(set: (pr) => pr.profilesParts)
+          .join(object: (profilePart) => profilePart.part)
+      // Restrict to public and authenticated user's parts
+      ..where((pa) =>
+          pa.presentation == ElementPresentation.public ||
+          pa.owner.id == request.authorization.ownerID);
 
     final parts = await query.fetch();
     return Response.ok(parts);

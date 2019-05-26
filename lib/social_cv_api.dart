@@ -21,7 +21,7 @@ export 'controllers/register_controller.dart';
 export 'controllers/user_controller.dart';
 
 /// Models
-export 'models/base_model.dart';
+export 'models/element_model.dart';
 export 'models/entry_model.dart';
 export 'models/group_model.dart';
 export 'models/joins/group_entry_join_model.dart';

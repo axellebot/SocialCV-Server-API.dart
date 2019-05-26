@@ -8,24 +8,27 @@ class UserController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<User>(context);
+    final query = Query<User>(context)
+      // Only owner can access user
+      ..where((u) => u.id = request.authorization.ownerID);
+
     final users = await query.fetch();
     return Response.ok(users);
   }
 
   @Operation.get("userId")
   Future<Response> getUser(@Bind.path("userId") int userId) async {
-    final query = Query<User>(context)..where((o) => o.id).equalTo(userId);
-    final u = await query.fetchOne();
-    if (u == null) {
+    final query = Query<User>(context)
+      ..where((u) => u.id == userId)
+      // Only owner can access user
+      ..where((u) => u.id == request.authorization.ownerID);
+
+    final user = await query.fetchOne();
+    if (user == null) {
       return Response.notFound();
     }
 
-    if (request.authorization.ownerID != userId) {
-      // Filter out stuff for non-owner of user
-    }
-
-    return Response.ok(u);
+    return Response.ok(user);
   }
 
   @Operation.put("userId")
@@ -37,14 +40,14 @@ class UserController extends ResourceController {
 
     final query = Query<User>(context)
       ..values = user
-      ..where((o) => o.id).equalTo(userId);
+      ..where((u) => u.id == userId);
 
-    final u = await query.updateOne();
-    if (u == null) {
+    final updatedUser = await query.updateOne();
+    if (updatedUser == null) {
       return Response.notFound();
     }
 
-    return Response.ok(u);
+    return Response.ok(updatedUser);
   }
 
   @Operation.delete("userId")
@@ -53,9 +56,13 @@ class UserController extends ResourceController {
       return Response.unauthorized();
     }
 
-    final query = Query<User>(context)..where((o) => o.id).equalTo(userId);
+    final query = Query<User>(context)..where((u) => u.id == userId);
     await authServer.revokeAllGrantsForResourceOwner(userId);
-    await query.delete();
+
+    final count = await query.delete();
+    if (count == 0) {
+      return Response.notFound();
+    }
 
     return Response.ok(null);
   }
@@ -69,7 +76,12 @@ class UserProfilesController extends ResourceController {
 
   @Operation.get("userId")
   Future<Response> getProfiles(@Bind.path("userId") int userId) async {
-    final query = Query<Profile>(context)..where((p) => p.owner.id == userId);
+    final query = Query<Profile>(context)
+      ..where((pr) => pr.owner.id == userId)
+      // Restrict to public and authenticated user's profiles
+      ..where((pr) =>
+          pr.presentation == ElementPresentation.public ||
+          pr.owner.id == request.authorization.ownerID);
 
     final profiles = await query.fetch();
     return Response.ok(profiles);
@@ -84,7 +96,12 @@ class UserPartsController extends ResourceController {
 
   @Operation.get("userId")
   Future<Response> getParts(@Bind.path("userId") int userId) async {
-    final query = Query<Part>(context)..where((p) => p.owner.id == userId);
+    final query = Query<Part>(context)
+      ..where((pa) => pa.owner.id == userId)
+      // Restrict to public and authenticated user's parts
+      ..where((pa) =>
+          pa.presentation == ElementPresentation.public ||
+          pa.owner.id == request.authorization.ownerID);
 
     final parts = await query.fetch();
     return Response.ok(parts);
@@ -99,7 +116,12 @@ class UserGroupsController extends ResourceController {
 
   @Operation.get("userId")
   Future<Response> getGroups(@Bind.path("userId") int userId) async {
-    final query = Query<Group>(context)..where((g) => g.owner.id == userId);
+    final query = Query<Group>(context)
+      ..where((g) => g.owner.id == userId)
+      // Restrict to public and authenticated user's groups
+      ..where((g) =>
+          g.presentation == ElementPresentation.public ||
+          g.owner.id == request.authorization.ownerID);
 
     final groups = await query.fetch();
     return Response.ok(groups);
@@ -114,7 +136,12 @@ class UserEntriesController extends ResourceController {
 
   @Operation.get("userId")
   Future<Response> getEntries(@Bind.path("userId") int userId) async {
-    final query = Query<Entry>(context)..where((e) => e.owner.id == userId);
+    final query = Query<Entry>(context)
+      ..where((e) => e.owner.id == userId)
+      // Restrict to public and authenticated user's groups
+      ..where((e) =>
+          e.presentation == ElementPresentation.public ||
+          e.owner.id == request.authorization.ownerID);
 
     final entries = await query.fetch();
     return Response.ok(entries);

@@ -1,9 +1,9 @@
 import 'package:social_cv_api/social_cv_api.dart';
 
-class Group extends BaseManagedObject<_Group> implements _Group {}
+class Group extends ElementManagedObject<_Group> implements _Group {}
 
 @Table(name: 'groups')
-class _Group extends BaseTableDefinition {
+class _Group extends ElementTableDefinition {
   @primaryKey
   int id;
 
