@@ -20,6 +20,16 @@ class GroupController extends ResourceController {
     return Response.ok(groups);
   }
 
+  @Operation.post()
+  Future<Response> createGroup(@Bind.body() Group group) async {
+    final query = Query<Group>(context)
+      ..values = group
+      ..valueMap['owner_id'] = request.authorization.ownerID;
+
+    final newGroup = await query.insert();
+    return Response.ok(newGroup);
+  }
+
   @Operation.get("groupId")
   Future<Response> getGroup(@Bind.path("groupId") int groupId) async {
     final query = Query<Group>(context)

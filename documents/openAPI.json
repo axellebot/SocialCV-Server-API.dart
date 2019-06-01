@@ -806,6 +806,42 @@
             "oauth2": []
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "operationId": "createProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Profile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response."
+          },
+          "400": {
+            "$ref": "#/components/responses/MalformedAuthorizationHeader"
+          },
+          "401": {
+            "$ref": "#/components/responses/InsufficientAccess"
+          },
+          "403": {
+            "$ref": "#/components/responses/InsufficientScope"
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ]
       }
     },
     "/profiles/{profileId}": {
@@ -990,6 +1026,42 @@
         ],
         "operationId": "getAll",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response."
+          },
+          "400": {
+            "$ref": "#/components/responses/MalformedAuthorizationHeader"
+          },
+          "401": {
+            "$ref": "#/components/responses/InsufficientAccess"
+          },
+          "403": {
+            "$ref": "#/components/responses/InsufficientScope"
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Part"
+        ],
+        "operationId": "createPart",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Part"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful response."
@@ -1212,6 +1284,42 @@
             "oauth2": []
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "operationId": "createGroup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Group"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response."
+          },
+          "400": {
+            "$ref": "#/components/responses/MalformedAuthorizationHeader"
+          },
+          "401": {
+            "$ref": "#/components/responses/InsufficientAccess"
+          },
+          "403": {
+            "$ref": "#/components/responses/InsufficientScope"
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ]
       }
     },
     "/groups/{groupId}": {
@@ -1396,6 +1504,42 @@
         ],
         "operationId": "getAll",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response."
+          },
+          "400": {
+            "$ref": "#/components/responses/MalformedAuthorizationHeader"
+          },
+          "401": {
+            "$ref": "#/components/responses/InsufficientAccess"
+          },
+          "403": {
+            "$ref": "#/components/responses/InsufficientScope"
+          }
+        },
+        "security": [
+          {
+            "oauth2": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Entry"
+        ],
+        "operationId": "createEntry",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Entry"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful response."

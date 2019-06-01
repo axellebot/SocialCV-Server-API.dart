@@ -20,6 +20,16 @@ class PartController extends ResourceController {
     return Response.ok(parts);
   }
 
+  @Operation.post()
+  Future<Response> createPart(@Bind.body() Part part) async {
+    final query = Query<Part>(context)
+      ..values = part
+      ..valueMap['owner_id'] = request.authorization.ownerID;
+
+    final newPart = await query.insert();
+    return Response.ok(newPart);
+  }
+
   @Operation.get("partId")
   Future<Response> getPart(@Bind.path("partId") int partId) async {
     final query = Query<Part>(context)

@@ -20,7 +20,7 @@ class RegisterController extends ResourceController {
 
     final query = Query<User>(context)..values = user;
 
-    final u = await query.insert();
+    final newUser = await query.insert();
     final token = await authServer.authenticate(
         user.username,
         user.password,
@@ -28,7 +28,7 @@ class RegisterController extends ResourceController {
         request.authorization.credentials.password);
 
     final response = AuthController.tokenResponse(token);
-    final newBody = u.asMap()..["authorization"] = response.body;
+    final newBody = newUser.asMap()..["authorization"] = response.body;
     return response..body = newBody;
   }
 

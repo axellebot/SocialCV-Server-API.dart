@@ -20,6 +20,16 @@ class ProfileController extends ResourceController {
     return Response.ok(profiles);
   }
 
+  @Operation.post()
+  Future<Response> createProfile(@Bind.body() Profile profile) async {
+    final query = Query<Profile>(context)
+      ..values = profile
+      ..valueMap['owner_id'] = request.authorization.ownerID;
+
+    final newProfile = await query.insert();
+    return Response.ok(newProfile);
+  }
+
   @Operation.get("profileId")
   Future<Response> getProfile(@Bind.path("profileId") int profileId) async {
     final query = Query<Profile>(context)

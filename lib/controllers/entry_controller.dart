@@ -20,6 +20,16 @@ class EntryController extends ResourceController {
     return Response.ok(entries);
   }
 
+  @Operation.post()
+  Future<Response> createEntry(@Bind.body() Entry entry) async {
+    final query = Query<Entry>(context)
+      ..values = entry
+      ..valueMap['owner_id'] = request.authorization.ownerID;
+
+    final newEntry = await query.insert();
+    return Response.ok(newEntry);
+  }
+
   @Operation.get("entryId")
   Future<Response> getEntry(@Bind.path("entryId") int entryId) async {
     final query = Query<Entry>(context)
