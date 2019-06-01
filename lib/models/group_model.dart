@@ -7,14 +7,11 @@ class _Group extends ElementTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'tags')
-  Document tags;
-
   ManagedSet<PartGroupJoin> partsGroups;
 
   ManagedSet<GroupEntryJoin> groupsEntries;
 
-  @Column(name:'type')
+  @Column()
   String type;
 
   @Relate(#groups)

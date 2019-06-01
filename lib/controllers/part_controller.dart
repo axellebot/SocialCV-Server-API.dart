@@ -10,9 +10,11 @@ class PartController extends ResourceController {
   Future<Response> getAll() async {
     final query = Query<Part>(context)
       // Restrict to public and authenticated user's groups
-      ..where((pa) =>
-          pa.presentation == ElementPresentation.public ||
-          pa.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = '@presentation' OR owner_id = '@ownerId'", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final parts = await query.fetch();
     return Response.ok(parts);
@@ -20,7 +22,14 @@ class PartController extends ResourceController {
 
   @Operation.get("partId")
   Future<Response> getPart(@Bind.path("partId") int partId) async {
-    final query = Query<Part>(context)..where((pa) => pa.id == partId);
+    final query = Query<Part>(context)
+      ..where((pa) => pa.id).equalTo(partId)
+      // Restrict to public or authenticated user's group
+      ..predicate = QueryPredicate(
+          "presentation = '@presentation' OR owner_id = '@ownerId'", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final part = await query.fetchOne();
     if (part == null) {
@@ -34,9 +43,9 @@ class PartController extends ResourceController {
       @Bind.path("partId") int partId, @Bind.body() Part part) async {
     final query = Query<Part>(context)
       ..values = part
-      ..where((pa) => pa.id == partId)
+      ..where((pa) => pa.id).equalTo(partId)
       // Restrict to authenticated user's part
-      ..where((pa) => pa.owner.id == request.authorization.ownerID);
+      ..where((pa) => pa.owner.id).equalTo(request.authorization.ownerID);
 
     final updatedPart = await query.updateOne();
     if (updatedPart == null) {
@@ -48,9 +57,9 @@ class PartController extends ResourceController {
   @Operation.delete("partId")
   Future<Response> deletePart(@Bind.path("partId") int partId) async {
     final query = Query<Part>(context)
-      ..where((pa) => pa.id == partId)
+      ..where((pa) => pa.id).equalTo(partId)
       // Restrict to authenticated user's part
-      ..where((pa) => pa.owner.id == request.authorization.ownerID);
+      ..where((pa) => pa.owner.id).equalTo(request.authorization.ownerID);
 
     final count = await query.delete();
     if (count == 0) {
@@ -68,18 +77,20 @@ class PartGroupsController extends ResourceController {
 
   @Operation.get("partId")
   Future<Response> getGroups(@Bind.path("partId") int partId) async {
-    final query = Query<Part>(context)
-      ..where((pa) => pa.id == partId)
-      // Restrict to public and authenticated user's part
-      ..where((pa) =>
-          pa.presentation == ElementPresentation.public ||
-          pa.owner.id == request.authorization.ownerID)
-      ..join(set: (pa) => pa.partsGroups)
-          .join(object: (partGroup) => partGroup.group)
-      // Restrict to public and authenticated user's groups
-      ..where((g) =>
-          g.presentation == ElementPresentation.public ||
-          g.owner.id == request.authorization.ownerID);
+    final query = Query<Group>(context)
+      ..join(set: (g) => g.partsGroups)
+          .join(object: (partGroup) => partGroup.part)
+          .where((pa) => pa.id)
+          .equalTo(partId)
+      ..predicate = QueryPredicate(
+          // Restrict to public and authenticated user's groups
+          "(t0.presentation = @presentation OR t0.owner_id = @ownerId:int8) "
+          // Restrict to public and authenticated user's part
+          "AND (t2.presentation = @presentation OR t2.owner_id = @ownerId:int8)",
+          {
+            "presentation": ElementPresentation.public,
+            "ownerId": request.authorization.ownerID,
+          });
 
     final groups = await query.fetch();
     return Response.ok(groups);

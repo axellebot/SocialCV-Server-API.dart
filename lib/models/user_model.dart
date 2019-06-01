@@ -14,26 +14,26 @@ class _User implements ResourceOwnerTableDefinition {
 
   /// The username of a resource owner.
   @override
-  @Column(name: 'username', unique: true, indexed: true)
+  @Column(unique: true, indexed: true)
   String username;
 
-  @Column(name: 'email', unique: true, indexed: true)
+  @Column(unique: true, indexed: true)
   String email;
 
-  @Column(name: 'fist_name')
+  @Column()
   String firstName;
 
-  @Column(name: 'last_name')
+  @Column()
   String lastName;
 
   /// The hashed password of a resource owner.
   @override
-  @Column(name: 'hashed_password', omitByDefault: true)
+  @Column(omitByDefault: true)
   String hashedPassword;
 
   /// The salt for [hashedPassword].
   @override
-  @Column(name: 'salt', omitByDefault: true)
+  @Column(omitByDefault: true)
   String salt;
 
   /// The list of tokens issue for this resource owner.

@@ -7,14 +7,11 @@ class _Part extends ElementTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'tags')
-  Document tags;
-
   ManagedSet<ProfilePartJoin> profilesParts;
 
   ManagedSet<PartGroupJoin> partsGroups;
 
-  @Column(name:'type')
+  @Column()
   String type;
 
   @Relate(#parts)

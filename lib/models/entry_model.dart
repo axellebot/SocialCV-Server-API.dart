@@ -7,12 +7,9 @@ class _Entry extends ElementTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name:'tags')
-  Document tags;
-
   ManagedSet<GroupEntryJoin> groupsEntries;
 
-  @Column(name:'type')
+  @Column()
   String type;
 
   @Relate(#entries)

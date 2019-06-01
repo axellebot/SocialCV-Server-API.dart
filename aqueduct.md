@@ -1,11 +1,11 @@
 # social_cv_api
 
 ## Global Help
-### Active changed aqueduct
+
+### Active aqueduct
 
 ```
-git clone https://github.com/axellebot/aquecduct.git
-pub global activate --source=path ./aqueduct/aqueduct
+pub global activate aqueduct
 ```
 
 ### Generate document
@@ -36,7 +36,7 @@ To run your application locally, you must also register OAuth 2.0 clients in the
 ```
 aqueduct auth add-client --id com.local.test \
     --secret mysecret \
-    --connect postgres://user:password@localhost:5432/social_cv_api
+    --connect postgres://user:password@localhost:5432/cv
 ```
 
 To run your tests with OAuth 2.0 client identifiers, see this documentation: http://aqueduct.io/docs/testing/mixins/#testing-applications-that-use-oauth-20.

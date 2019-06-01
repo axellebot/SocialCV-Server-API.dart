@@ -10,7 +10,7 @@ class UserController extends ResourceController {
   Future<Response> getAll() async {
     final query = Query<User>(context)
       // Only owner can access user
-      ..where((u) => u.id = request.authorization.ownerID);
+      ..where((u) => u.id).equalTo(request.authorization.ownerID);
 
     final users = await query.fetch();
     return Response.ok(users);
@@ -19,9 +19,9 @@ class UserController extends ResourceController {
   @Operation.get("userId")
   Future<Response> getUser(@Bind.path("userId") int userId) async {
     final query = Query<User>(context)
-      ..where((u) => u.id == userId)
+      ..where((u) => u.id).equalTo(userId)
       // Only owner can access user
-      ..where((u) => u.id == request.authorization.ownerID);
+      ..where((u) => u.id).equalTo(request.authorization.ownerID);
 
     final user = await query.fetchOne();
     if (user == null) {
@@ -40,7 +40,7 @@ class UserController extends ResourceController {
 
     final query = Query<User>(context)
       ..values = user
-      ..where((u) => u.id == userId);
+      ..where((u) => u.id).equalTo(userId);
 
     final updatedUser = await query.updateOne();
     if (updatedUser == null) {
@@ -56,7 +56,7 @@ class UserController extends ResourceController {
       return Response.unauthorized();
     }
 
-    final query = Query<User>(context)..where((u) => u.id == userId);
+    final query = Query<User>(context)..where((u) => u.id).equalTo(userId);
     await authServer.revokeAllGrantsForResourceOwner(userId);
 
     final count = await query.delete();
@@ -77,11 +77,13 @@ class UserProfilesController extends ResourceController {
   @Operation.get("userId")
   Future<Response> getProfiles(@Bind.path("userId") int userId) async {
     final query = Query<Profile>(context)
-      ..where((pr) => pr.owner.id == userId)
+      ..where((pr) => pr.owner.id).equalTo(userId)
       // Restrict to public and authenticated user's profiles
-      ..where((pr) =>
-          pr.presentation == ElementPresentation.public ||
-          pr.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = @presentation OR owner_id = @ownerId:int8", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final profiles = await query.fetch();
     return Response.ok(profiles);
@@ -97,11 +99,13 @@ class UserPartsController extends ResourceController {
   @Operation.get("userId")
   Future<Response> getParts(@Bind.path("userId") int userId) async {
     final query = Query<Part>(context)
-      ..where((pa) => pa.owner.id == userId)
+      ..where((pa) => pa.owner.id).equalTo(userId)
       // Restrict to public and authenticated user's parts
-      ..where((pa) =>
-          pa.presentation == ElementPresentation.public ||
-          pa.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = @presentation OR owner_id = @ownerId:int8", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final parts = await query.fetch();
     return Response.ok(parts);
@@ -117,11 +121,13 @@ class UserGroupsController extends ResourceController {
   @Operation.get("userId")
   Future<Response> getGroups(@Bind.path("userId") int userId) async {
     final query = Query<Group>(context)
-      ..where((g) => g.owner.id == userId)
+      ..where((g) => g.owner.id).equalTo(userId)
       // Restrict to public and authenticated user's groups
-      ..where((g) =>
-          g.presentation == ElementPresentation.public ||
-          g.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = @presentation OR owner_id = @ownerId:int8", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final groups = await query.fetch();
     return Response.ok(groups);
@@ -137,11 +143,13 @@ class UserEntriesController extends ResourceController {
   @Operation.get("userId")
   Future<Response> getEntries(@Bind.path("userId") int userId) async {
     final query = Query<Entry>(context)
-      ..where((e) => e.owner.id == userId)
+      ..where((e) => e.owner.id).equalTo(userId)
       // Restrict to public and authenticated user's groups
-      ..where((e) =>
-          e.presentation == ElementPresentation.public ||
-          e.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = @presentation OR owner_id = @ownerId:int8", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final entries = await query.fetch();
     return Response.ok(entries);

@@ -21,15 +21,18 @@ class ElementManagedObject<T extends ElementTableDefinition>
 }
 
 class ElementTableDefinition {
-  @Column(name: 'presentation')
+  @Column()
+  Document tags;
+
+  @Column()
   ElementPresentation presentation;
 
-  @Column(name: 'updated_at')
+  @Column()
   DateTime updatedAt;
 
-  @Column(name: 'created_at')
+  @Column()
   DateTime createdAt;
 
-  @Column(name: 'version')
+  @Column()
   int version;
 }

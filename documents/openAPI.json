@@ -1594,13 +1594,13 @@
             "description": "No two objects may have the same value for this field.\n",
             "nullable": false
           },
-          "fist_name": {
-            "title": "fist_name",
+          "firstName": {
+            "title": "firstName",
             "type": "string",
             "nullable": false
           },
-          "last_name": {
-            "title": "last_name",
+          "lastName": {
+            "title": "lastName",
             "type": "string",
             "nullable": false
           },
@@ -1768,15 +1768,15 @@
             "description": "This is the primary identifier for this object.\n",
             "nullable": false
           },
+          "type": {
+            "title": "type",
+            "type": "string",
+            "nullable": false
+          },
           "tags": {
             "title": "tags",
             "type": "object",
             "additionalProperties": true,
-            "nullable": false
-          },
-          "type": {
-            "title": "type",
-            "type": "string",
             "nullable": false
           },
           "presentation": {
@@ -1788,14 +1788,14 @@
             "type": "string",
             "nullable": false
           },
-          "updated_at": {
-            "title": "updated_at",
+          "updatedAt": {
+            "title": "updatedAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
           },
-          "created_at": {
-            "title": "created_at",
+          "createdAt": {
+            "title": "createdAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
@@ -1835,15 +1835,15 @@
             "description": "This is the primary identifier for this object.\n",
             "nullable": false
           },
+          "type": {
+            "title": "type",
+            "type": "string",
+            "nullable": false
+          },
           "tags": {
             "title": "tags",
             "type": "object",
             "additionalProperties": true,
-            "nullable": false
-          },
-          "type": {
-            "title": "type",
-            "type": "string",
             "nullable": false
           },
           "presentation": {
@@ -1855,14 +1855,14 @@
             "type": "string",
             "nullable": false
           },
-          "updated_at": {
-            "title": "updated_at",
+          "updatedAt": {
+            "title": "updatedAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
           },
-          "created_at": {
-            "title": "created_at",
+          "createdAt": {
+            "title": "createdAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
@@ -2003,15 +2003,15 @@
             "description": "This is the primary identifier for this object.\n",
             "nullable": false
           },
+          "type": {
+            "title": "type",
+            "type": "string",
+            "nullable": false
+          },
           "tags": {
             "title": "tags",
             "type": "object",
             "additionalProperties": true,
-            "nullable": false
-          },
-          "type": {
-            "title": "type",
-            "type": "string",
             "nullable": false
           },
           "presentation": {
@@ -2023,14 +2023,14 @@
             "type": "string",
             "nullable": false
           },
-          "updated_at": {
-            "title": "updated_at",
+          "updatedAt": {
+            "title": "updatedAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
           },
-          "created_at": {
-            "title": "created_at",
+          "createdAt": {
+            "title": "createdAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
@@ -2103,14 +2103,14 @@
             "type": "string",
             "nullable": false
           },
-          "updated_at": {
-            "title": "updated_at",
+          "updatedAt": {
+            "title": "updatedAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
           },
-          "created_at": {
-            "title": "created_at",
+          "createdAt": {
+            "title": "createdAt",
             "type": "string",
             "format": "date-time",
             "nullable": false
@@ -2168,13 +2168,13 @@
             "description": "No two objects may have the same value for this field.\n",
             "nullable": false
           },
-          "fist_name": {
-            "title": "fist_name",
+          "firstName": {
+            "title": "firstName",
             "type": "string",
             "nullable": false
           },
-          "last_name": {
-            "title": "last_name",
+          "lastName": {
+            "title": "lastName",
             "type": "string",
             "nullable": false
           },

@@ -7,14 +7,11 @@ class _Profile extends ElementTableDefinition {
   @primaryKey
   int id;
 
-  @Column(name: 'title')
+  @Column()
   String title;
 
-  @Column(name: 'subtitle')
+  @Column()
   String subtitle;
-
-  @Column(name:'tags')
-  Document tags;
 
   ManagedSet<ProfilePartJoin> profilesParts;
 

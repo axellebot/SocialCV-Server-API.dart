@@ -10,9 +10,11 @@ class GroupController extends ResourceController {
   Future<Response> getAll() async {
     final query = Query<Group>(context)
       // Restrict to public and authenticated user's groups
-      ..where((g) =>
-          g.presentation == ElementPresentation.public ||
-          g.owner.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = '@presentation' OR owner_id = '@ownerId'", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final groups = await query.fetch();
     return Response.ok(groups);
@@ -21,11 +23,13 @@ class GroupController extends ResourceController {
   @Operation.get("groupId")
   Future<Response> getGroup(@Bind.path("groupId") int groupId) async {
     final query = Query<Group>(context)
-      ..where((g) => g.id == groupId)
+      ..where((g) => g.id).equalTo(groupId)
       // Restrict to public or authenticated user's group
-      ..where((g) =>
-          g.presentation == ElementPresentation.public ||
-          g.id == request.authorization.ownerID);
+      ..predicate = QueryPredicate(
+          "presentation = '@presentation' OR owner_id = '@ownerId'", {
+        "presentation": ElementPresentation.public,
+        "ownerId": request.authorization.ownerID,
+      });
 
     final group = await query.fetchOne();
     if (group == null) {
@@ -39,9 +43,9 @@ class GroupController extends ResourceController {
       @Bind.path("groupId") int groupId, @Bind.body() Group group) async {
     final query = Query<Group>(context)
       ..values = group
-      ..where((g) => g.id == groupId)
+      ..where((g) => g.id).equalTo(groupId)
       // Restrict to authenticated user's group
-      ..where((g) => g.owner.id == request.authorization.ownerID);
+      ..where((g) => g.owner.id).equalTo(request.authorization.ownerID);
 
     final updatedGroup = await query.updateOne();
     if (updatedGroup == null) {
@@ -53,9 +57,9 @@ class GroupController extends ResourceController {
   @Operation.delete("groupId")
   Future<Response> deleteGroup(@Bind.path("groupId") int groupId) async {
     final query = Query<Group>(context)
-      ..where((g) => g.id == groupId)
+      ..where((g) => g.id).equalTo(groupId)
       // Restrict to authenticated user's group
-      ..where((g) => g.owner.id == request.authorization.ownerID);
+      ..where((g) => g.owner.id).equalTo(request.authorization.ownerID);
 
     final count = await query.delete();
     if (count == 0) {
@@ -73,18 +77,20 @@ class GroupEntriesController extends ResourceController {
 
   @Operation.get("groupId")
   Future<Response> getEntries(@Bind.path("groupId") int groupId) async {
-    final query = Query<Group>(context)
-      ..where((g) => g.id == groupId)
-      // Restrict to public or authenticated user's group
-      ..where((g) =>
-          g.presentation == ElementPresentation.public ||
-          g.owner.id == request.authorization.ownerID)
-      ..join(set: (g) => g.groupsEntries)
-          .join(object: (groupEntry) => groupEntry.entry)
-      // Restrict to public or authenticated user's entries
-      ..where((e) =>
-          e.presentation == ElementPresentation.public ||
-          e.owner.id == request.authorization.ownerID);
+    final query = Query<Entry>(context)
+      ..join(set: (e) => e.groupsEntries)
+          .join(object: (groupEntry) => groupEntry.group)
+          .where((g) => g.id)
+          .equalTo(groupId)
+      ..predicate = QueryPredicate(
+          // Restrict to public and authenticated user's entries
+          "(t0.presentation = @presentation OR t0.owner_id = @ownerId:int8) "
+          // Restrict to public and authenticated user's group
+          "AND (t2.presentation = @presentation OR t2.owner_id = @ownerId:int8)",
+          {
+            "presentation": ElementPresentation.public,
+            "ownerId": request.authorization.ownerID,
+          });
 
     final entries = await query.fetch();
     return Response.ok(entries);
