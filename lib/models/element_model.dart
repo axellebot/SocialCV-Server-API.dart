@@ -5,7 +5,7 @@ enum ElementPresentation {
   public,
 }
 
-class ElementManagedObject<T extends ElementTableDefinition>
+abstract class ElementManagedObject<T extends ElementTableDefinition>
     extends ManagedObject<T> {
   @override
   void willInsert() {
@@ -20,19 +20,28 @@ class ElementManagedObject<T extends ElementTableDefinition>
   }
 }
 
-class ElementTableDefinition {
+abstract class ElementTableDefinition {
+  @primaryKey
+  int id;
+
   @Column()
   Document tags;
 
   @Column()
   ElementPresentation presentation;
 
+  @Serialize(input: false, output: false)
+  User owner;
+
+  @Serialize(input: false, output: true)
   @Column()
   DateTime updatedAt;
 
+  @Serialize(input: false, output: true)
   @Column()
   DateTime createdAt;
 
+  @Serialize(input: false, output: true)
   @Column()
   int version;
 }

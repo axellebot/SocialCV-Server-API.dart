@@ -2,6 +2,29 @@ import 'package:social_cv_api/social_cv_api.dart';
 
 class User extends ManagedObject<_User>
     implements _User, ManagedAuthResourceOwner<_User> {
+  @Serialize(input: true, output: true)
+  List<int> get profileIds {
+    removePropertyFromBackingMap('profiles');
+    return profiles.map((profile) => profile.id).toList();
+  }
+
+  @Serialize(input: true, output: true)
+  List<int> get partIds {
+    removePropertyFromBackingMap('parts');
+    return parts.map((part) => part.id).toList();
+  }
+
+  @Serialize(input: true, output: true)
+  List<int> get groupIds {
+    removePropertyFromBackingMap('groups');
+    return groups.map((group) => group.id).toList();
+  }
+
+  @Serialize(input: true, output: true)
+  List<int> get entryIds {
+    return entries.map((entry) => entry.id).toList();
+  }
+
   @Serialize(input: true, output: false)
   String password;
 }
@@ -41,7 +64,10 @@ class _User implements ResourceOwnerTableDefinition {
   ManagedSet<ManagedAuthToken> tokens;
 
   ManagedSet<Profile> profiles;
+
   ManagedSet<Part> parts;
+
   ManagedSet<Group> groups;
+
   ManagedSet<Entry> entries;
 }

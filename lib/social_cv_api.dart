@@ -8,6 +8,7 @@ export 'dart:io';
 
 export 'package:aqueduct/aqueduct.dart';
 export 'package:aqueduct/managed_auth.dart';
+export 'package:meta/meta.dart';
 
 export 'channel.dart';
 
