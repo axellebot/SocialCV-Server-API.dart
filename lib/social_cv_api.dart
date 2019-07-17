@@ -1,33 +1,25 @@
 /// social_cv_api
 ///
-/// A Aqueduct web server.
+/// An API server.
 library social_cv_api;
 
-export 'dart:async';
-export 'dart:io';
+import 'dart:async';
 
-export 'package:aqueduct/aqueduct.dart';
-export 'package:aqueduct/managed_auth.dart';
-export 'package:meta/meta.dart';
+import 'package:angel_framework/angel_framework.dart';
+import 'package:file/local.dart';
 
-export 'channel.dart';
+import 'src/config/config.dart' as configuration;
+import 'src/routes/routes.dart' as routes;
+import 'src/services/services.dart' as services;
 
-/// Controllers
-export 'controllers/entry_controller.dart';
-export 'controllers/group_controller.dart';
-export 'controllers/identity_controller.dart';
-export 'controllers/part_controller.dart';
-export 'controllers/profile_controller.dart';
-export 'controllers/register_controller.dart';
-export 'controllers/user_controller.dart';
+/// Configures the server instance.
+Future configureServer(Angel app) async {
+  // Grab a handle to the file system, so that we can do things like
+  // serve static files.
+  var fs = const LocalFileSystem();
 
-/// Models
-export 'models/element_model.dart';
-export 'models/entry_model.dart';
-export 'models/group_model.dart';
-export 'models/joins/group_entry_join_model.dart';
-export 'models/joins/part_group_join_model.dart';
-export 'models/joins/profile_part_join_model.dart';
-export 'models/part_model.dart';
-export 'models/profile_model.dart';
-export 'models/user_model.dart';
+  // Set up our application, using the plug-ins defined with this project.
+  await app.configure(configuration.configureServer(fs));
+  await app.configure(services.configureServer);
+  await app.configure(routes.configureServer(fs));
+}
