@@ -3,6 +3,15 @@ import 'dart:async';
 import 'package:angel_framework/angel_framework.dart';
 import 'package:social_cv_api/src/models/models.dart';
 
+Future<User> parseUser(RequestContext req, ResponseContext res) async {
+  // Parse the body, if it has not already been parsed.
+  await req.parseBody();
+
+  final User user = UserSerializer.fromMap(req.bodyAsMap);
+
+  return user;
+}
+
 Future<Profile> parseProfile(RequestContext req, ResponseContext res) async {
   // Parse the body, if it has not already been parsed.
   await req.parseBody();

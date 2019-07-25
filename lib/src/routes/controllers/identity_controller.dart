@@ -2,14 +2,21 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:meta/meta.dart';
+import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/me')
 class IdentityController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
+  final AuthorizationMiddleware authMiddleware;
 
-  IdentityController(this.executor);
+  IdentityController({
+    @required this.executor,
+    @required this.authMiddleware,
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET')
   Future<User> getIdentity(User authenticatedUser) async {
@@ -27,10 +34,7 @@ class IdentityController extends Controller {
     return profiles;
   }
 
-  @Expose(
-    '/parts',
-    method: 'GET',
-  )
+  @Expose('/parts', method: 'GET')
   Future<List<Part>> getParts(User authenticatedUser) async {
     final q = PartQuery()..where.id.equals(authenticatedUser.id);
 

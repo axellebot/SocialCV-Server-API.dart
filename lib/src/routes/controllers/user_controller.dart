@@ -2,14 +2,22 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:meta/meta.dart';
+import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/users')
 class UserController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
+  final AuthorizationMiddleware authMiddleware;
 
-  UserController(this.executor);
+  UserController({
+    @required this.executor,
+    @required this.authMiddleware,
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET')
   FutureOr<List<User>> getAll(User authenticatedUser) async {
@@ -35,7 +43,7 @@ class UserController extends Controller {
     return user;
   }
 
-  @Expose('/:userId', method: 'PUT')
+  @Expose('/:userId', method: 'PUT', middleware: [parser.parseUser])
   FutureOr<User> updateUser(
       String userId, User user, User authenticatedUser) async {
 //    if (request.authorization.ownerID != userId) {

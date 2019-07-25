@@ -2,14 +2,22 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:meta/meta.dart';
+import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/profiles')
 class ProfileController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
+  final AuthorizationMiddleware authMiddleware;
 
-  ProfileController(this.executor);
+  ProfileController({
+    @required this.executor,
+    @required this.authMiddleware,
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET')
   FutureOr<List<Profile>> getAll(User authenticatedUser) async {
@@ -25,7 +33,7 @@ class ProfileController extends Controller {
     return profiles;
   }
 
-  @Expose('', method: 'POST')
+  @Expose('', method: 'POST', middleware: [parser.parseProfile])
   FutureOr<Profile> createProfile(
       Profile profile, User authenticatedUser) async {
     final q = ProfileQuery();
@@ -54,7 +62,7 @@ class ProfileController extends Controller {
     return profile;
   }
 
-  @Expose('/:profileId', method: 'PUT')
+  @Expose('/:profileId', method: 'PUT', middleware: [parser.parseProfile])
   FutureOr<Profile> updateProfile(
       String profileId, Profile profile, User authenticatedUser) async {
     final q = ProfileQuery()..where.id.equals(profileId);

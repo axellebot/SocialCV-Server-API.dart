@@ -2,14 +2,22 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:meta/meta.dart';
+import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/parts')
 class PartController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
+  final AuthorizationMiddleware authMiddleware;
 
-  PartController(this.executor);
+  PartController({
+    @required this.executor,
+    @required this.authMiddleware,
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET')
   Future<List<Part>> getAll(User authenticatedUser) async {
@@ -25,7 +33,7 @@ class PartController extends Controller {
     return parts;
   }
 
-  @Expose('', method: 'POST')
+  @Expose('', method: 'POST', middleware: [parser.parsePart])
   Future<Part> createPart(Part part, User authenticatedUser) async {
     final q = PartQuery();
 //      ..values = part
@@ -53,7 +61,7 @@ class PartController extends Controller {
     return part;
   }
 
-  @Expose('/:partId', method: 'PUT')
+  @Expose('/:partId', method: 'PUT', middleware: [parser.parsePart])
   FutureOr<Part> updatePart(
       String partId, Part part, User authenticatedUser) async {
     final q = PartQuery();
@@ -86,7 +94,7 @@ class PartController extends Controller {
 
   @Expose('/:partId/groups', method: 'GET')
   FutureOr<List<Group>> getGroups(String partId, User authenticatedUser) async {
-    final q = PartQuery();
+//    final q = PartQuery();
 //      ..join(set: (g) => g.partsGroups)
 //          .join(object: (partGroup) => partGroup.part)
 //          .where((pa) => pa.id)
@@ -100,8 +108,8 @@ class PartController extends Controller {
 //            "presentation": ElementPresentation.public,
 //            "ownerId": request.authorization.ownerID,
 //          });
-
-    List<Group> groups = await q.get(executor);
-    return groups;
+//
+//    List<Group> groups = await q.get(executor);
+//    return groups;
   }
 }

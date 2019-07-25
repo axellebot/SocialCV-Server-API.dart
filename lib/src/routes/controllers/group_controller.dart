@@ -2,14 +2,22 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:meta/meta.dart';
+import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/groups')
 class GroupController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
+  final AuthorizationMiddleware authMiddleware;
 
-  GroupController(this.executor);
+  GroupController({
+    @required this.executor,
+    @required this.authMiddleware,
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET')
   Future<List<Group>> getAll(User authenticatedUser) async {
@@ -25,7 +33,7 @@ class GroupController extends Controller {
     return groups;
   }
 
-  @Expose('', method: 'POST')
+  @Expose('', method: 'POST', middleware: [parser.parseGroup])
   Future<Group> createGroup(Group group, User authenticatedUser) async {
     final query = GroupQuery();
 //      ..values = group
@@ -53,7 +61,7 @@ class GroupController extends Controller {
     return group;
   }
 
-  @Expose('/:groupId', method: 'PUT')
+  @Expose('/:groupId', method: 'PUT', middleware: [parser.parseGroup])
   Future<Group> updateGroup(String groupId, User authenticatedUser) async {
     final q = GroupQuery()..where.id.equals(groupId);
 //      ..values = group

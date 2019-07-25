@@ -15,7 +15,7 @@ import 'package:social_cv_api/src/routes/controllers/register_controller.dart';
 import 'package:social_cv_api/src/routes/controllers/user_controller.dart';
 
 Future configureServer(Angel app) async {
-  /// Controllers will not function unless wired to the application!
+  // Controllers will not function unless wired to the application!
   // Create the controller with injected dependencies
   await app.mountController<OAuthController>();
   await app.mountController<UserController>();

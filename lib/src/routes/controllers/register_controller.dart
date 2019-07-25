@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/register')
@@ -11,7 +12,7 @@ class RegisterController extends Controller {
 
   RegisterController(this.executor);
 
-  @Expose('', method: 'POST')
+  @Expose('', method: 'POST', middleware: [parser.parseUser])
   FutureOr<User> createUser(User user, User authenticatedUser) async {
     // Check for required parameters before we spend time hashing
     if (user.username == null || user.password == null) {

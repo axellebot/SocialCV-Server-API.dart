@@ -4,6 +4,7 @@ import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
 import 'package:meta/meta.dart';
 import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
+import 'package:social_cv_api/src/middlewares/parser_middleware.dart' as parser;
 import 'package:social_cv_api/src/models/models.dart';
 
 @Expose('/entries')
@@ -15,9 +16,11 @@ class EntryController extends Controller {
   EntryController({
     @required this.executor,
     @required this.authMiddleware,
-  });
+  })  : assert(executor != null, 'No $QueryExecutor given'),
+        assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @Expose('', method: 'GET', middleware: [authMiddleware.requireAuth])
+  @Expose('', method: 'GET')
   Future<List<Entry>> getAll(User authenticatedUser) async {
     final q = EntryQuery()
       // Restrict to public and authenticated user's entries
@@ -28,7 +31,7 @@ class EntryController extends Controller {
     return entries;
   }
 
-  @Expose('', method: 'POST')
+  @Expose('', method: 'POST', middleware: [parser.parseEntry])
   Future<Entry> createEntry(Entry entry, User authenticatedUser) async {
     final q = EntryQuery()..substitutionValues.addAll(entry.toJson());
 //      ..valueMap['owner_id'] = request.authorization.ownerID;
@@ -56,7 +59,7 @@ class EntryController extends Controller {
     return entry;
   }
 
-  @Expose('/:entryId', method: 'PUT')
+  @Expose('/:entryId', method: 'PUT', middleware: [parser.parseEntry])
   Future<Entry> updateEntry(
       String entryId, Entry entry, User authenticatedUser) async {
     final q = EntryQuery()..where.id.equals(entryId);
