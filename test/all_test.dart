@@ -23,7 +23,7 @@ main() async {
 
   setUp(() async {
     final app = Angel();
-    await app.configure(configureServer);
+//    await app.configure(configureServer);
 
     client = await connectTo(app);
   });

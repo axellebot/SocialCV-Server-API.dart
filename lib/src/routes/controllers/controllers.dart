@@ -21,6 +21,7 @@ Future configureServer(Angel app) async {
   await app.mountController<UserController>();
   await app.mountController<IdentityController>();
   await app.mountController<RegisterController>();
+  // Element
   await app.mountController<ProfileController>();
   await app.mountController<PartController>();
   await app.mountController<GroupController>();

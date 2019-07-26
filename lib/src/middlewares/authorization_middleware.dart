@@ -13,12 +13,7 @@ class AuthorizationMiddleware {
 
   final QueryExecutor executor;
 
-  RequestHandler get requireAuth => chain([
-        requireToken,
-        authenticate,
-      ]);
-
-  FutureOr<bool> requireToken(RequestContext req, ResponseContext res) async {
+  Future<bool> _requireToken(RequestContext req, ResponseContext res) async {
     final String authorizationToken =
         req.headers.value('authorization')?.replaceAll(_rgxBearer, '')?.trim();
 
@@ -31,7 +26,7 @@ class AuthorizationMiddleware {
     return true;
   }
 
-  FutureOr<bool> authenticate(RequestContext req, ResponseContext res) async {
+  Future<bool> _authenticate(RequestContext req, ResponseContext res) async {
     final authorizationToken = req.params['authenticationToken'] as String;
     final q = AuthTokenQuery()..where.token.equals(authorizationToken);
 
@@ -46,4 +41,6 @@ class AuthorizationMiddleware {
 
     return true;
   }
+
+  RequestHandler get requireAuth => chain([_requireToken, _authenticate]);
 }

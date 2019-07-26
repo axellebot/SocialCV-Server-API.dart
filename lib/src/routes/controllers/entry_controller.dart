@@ -19,7 +19,11 @@ class EntryController extends Controller {
   })  : assert(executor != null, 'No $QueryExecutor given'),
         assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
-  @Expose('', method: 'GET', middleware: [authMiddleware.requireAuth])
+  @override
+  FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('*', authMiddleware.requireAuth);
+  }
+
   @Expose('', method: 'GET')
   Future<List<Entry>> getAll(User authenticatedUser) async {
     final q = EntryQuery()

@@ -19,6 +19,11 @@ class PartController extends Controller {
   })  : assert(executor != null, 'No $QueryExecutor given'),
         assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
+  @override
+  FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('*', authMiddleware.requireAuth);
+  }
+
   @Expose('', method: 'GET')
   Future<List<Part>> getAll(User authenticatedUser) async {
     final q = PartQuery();

@@ -12,7 +12,7 @@ dependencies:
   angel_migration_runner: ^2.0.0-alpha
   angel_oauth2: ^2.3.0 # Supports stateless authentication via OAuth 2.0
   angel_configuration: ^2.1.0 # Loads application configuration, along with support for .env files.
-  angel_framework: ^2.0.4 # The core server library.
+  angel_framework: ^2.0.4+1 # The core server library.
   angel_jael: ^2.0.0 # Server-side templating engine
   angel_migration: ^2.0.0 # Migration runtime support
   angel_orm: ^2.0.1 # Migration runtime support
