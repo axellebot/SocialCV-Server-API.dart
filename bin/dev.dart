@@ -12,11 +12,11 @@ Future main() async {
   // Watch the config/ and web/ directories for changes, and hot-reload the server.
   hierarchicalLoggingEnabled = true;
 
-  var hot = HotReloader(() async {
-    var logger = Logger.detached('{{angel}}')
+  final hot = HotReloader(() async {
+    final logger = Logger.detached('{{angel}}')
       ..level = Level.ALL
       ..onRecord.listen(prettyLog);
-    var app = Angel(logger: logger, reflector: MirrorsReflector());
+    final app = Angel(logger: logger, reflector: const MirrorsReflector());
     await app.configure(cv.configureServer);
     return app;
   }, [
@@ -24,7 +24,7 @@ Future main() async {
     Directory('lib'),
   ]);
 
-  var server = await hot.startServer('127.0.0.1', 3000);
+  final server = await hot.startServer('127.0.0.1', 3000);
   print(
       'API server listening at http://${server.address.address}:${server.port}');
   print('Use Ctrl-C (SIGINT) to stop running the application.');
