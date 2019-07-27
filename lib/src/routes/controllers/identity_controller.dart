@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
-import 'package:meta/meta.dart';
 import 'package:social_cv_api/src/middlewares/authorization_middleware.dart';
 import 'package:social_cv_api/src/models/models.dart';
 
@@ -12,10 +11,10 @@ class IdentityController extends Controller {
   final QueryExecutor executor;
   final AuthorizationMiddleware authMiddleware;
 
-  IdentityController({
-    @required this.executor,
-    @required this.authMiddleware,
-  })  : assert(executor != null, 'No $QueryExecutor given'),
+  IdentityController(
+    this.executor,
+    this.authMiddleware,
+  )   : assert(executor != null, 'No $QueryExecutor given'),
         assert(authMiddleware != null, 'No $AuthorizationMiddleware given');
 
   @override

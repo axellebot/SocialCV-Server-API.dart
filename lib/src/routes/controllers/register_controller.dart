@@ -10,7 +10,8 @@ class RegisterController extends Controller {
   // Auto-injected by Angel
   final QueryExecutor executor;
 
-  RegisterController(this.executor);
+  RegisterController(this.executor)
+      : assert(executor != null, 'No $QueryExecutor given');
 
   @Expose('', method: 'POST', middleware: [parser.parseUser])
   FutureOr<User> createUser(User user, User authenticatedUser) async {
