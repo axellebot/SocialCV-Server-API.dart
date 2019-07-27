@@ -12,14 +12,25 @@ Future main(List<String> args) async {
   final configuration = await loadStandaloneConfiguration(fs);
   final connection = await connectToPostgres(configuration);
   final migrationRunner = PostgresMigrationRunner(connection, migrations: [
+    // Elements
+
     UserMigration(),
     ProfileMigration(),
     PartMigration(),
     GroupMigration(),
     EntryMigration(),
+
+    // Joins
+
+    ProfilePartJoinMigration(),
+    PartGroupJoinMigration(),
+    GroupEntryJoinMigration(),
+
     // OAuth
+
     ClientMigration(),
     AuthCodeMigration(),
+    AuthTokenMigration()
   ]);
   return await runMigrations(migrationRunner, args);
 }

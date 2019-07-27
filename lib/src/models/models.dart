@@ -15,11 +15,11 @@ class _Model {
   String id;
 
   /// The time at which this item was created.
-  @Column(type: ColumnType.dateTime)
+  @Column(type: ColumnType.timeStampWithTimeZone)
   DateTime createdAt;
 
   /// The last time at which this item was updated.
-  @Column(type: ColumnType.dateTime)
+  @Column(type: ColumnType.timeStampWithTimeZone)
   DateTime updatedAt;
 }
 
@@ -203,7 +203,7 @@ class _Token extends _Model {
 
   String scope;
 
-  @Column(type: ColumnType.dateTime)
+  @Column(type: ColumnType.timeStampWithTimeZone)
   DateTime expireAt;
 
   @HasOne(cascadeOnDelete: false)

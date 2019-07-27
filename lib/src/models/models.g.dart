@@ -11,8 +11,8 @@ class UserMigration extends Migration {
   up(Schema schema) {
     schema.create('users', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.varChar('username');
       table.varChar('email');
       table.varChar('first_name');
@@ -33,8 +33,8 @@ class ProfileMigration extends Migration {
   up(Schema schema) {
     schema.create('profiles', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.integer('presentation');
       table.declare('tags', ColumnType('jsonb'));
       table.integer('version');
@@ -54,8 +54,8 @@ class PartMigration extends Migration {
   up(Schema schema) {
     schema.create('parts', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.integer('presentation');
       table.declare('tags', ColumnType('jsonb'));
       table.integer('version');
@@ -74,8 +74,8 @@ class GroupMigration extends Migration {
   up(Schema schema) {
     schema.create('groups', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.integer('presentation');
       table.declare('tags', ColumnType('jsonb'));
       table.integer('version');
@@ -94,8 +94,8 @@ class EntryMigration extends Migration {
   up(Schema schema) {
     schema.create('entries', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.integer('presentation');
       table.declare('tags', ColumnType('jsonb'));
       table.integer('version');
@@ -167,8 +167,8 @@ class ClientMigration extends Migration {
   up(Schema schema) {
     schema.create('clients', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.varChar('random_id');
       table.varChar('secret');
       table.varChar('encrypted_secret');
@@ -188,11 +188,11 @@ class AuthTokenMigration extends Migration {
   up(Schema schema) {
     schema.create('auth_tokens', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.varChar('token');
       table.varChar('scope');
-      table.declare('expire_at', ColumnType('datetime'));
+      table.declare('expire_at', ColumnType('timestamp with time zone'));
       table.varChar('refresh_token');
     });
   }
@@ -208,11 +208,11 @@ class AuthCodeMigration extends Migration {
   up(Schema schema) {
     schema.create('auth_codes', (table) {
       table.varChar('id')..primaryKey();
-      table.declare('created_at', ColumnType('datetime'));
-      table.declare('updated_at', ColumnType('datetime'));
+      table.declare('created_at', ColumnType('timestamp with time zone'));
+      table.declare('updated_at', ColumnType('timestamp with time zone'));
       table.varChar('token');
       table.varChar('scope');
-      table.declare('expire_at', ColumnType('datetime'));
+      table.declare('expire_at', ColumnType('timestamp with time zone'));
       table.varChar('redirect_uri');
     });
   }
