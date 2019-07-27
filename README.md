@@ -1,5 +1,11 @@
 # Social-CV Server API
 
+## Serialization
+``` 
+pub run build_runner build
+```
+
+
 ## License
 
 ```
@@ -12,3 +18,4 @@
     You may obtain a copy of the License at
     https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.txt
 ```
+

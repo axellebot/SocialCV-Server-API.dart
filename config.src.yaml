@@ -1,6 +1,0 @@
-database:
- username: cv
- password: cv
- host: localhost
- port: 5432
- databaseName: cv
