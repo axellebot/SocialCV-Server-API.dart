@@ -20,10 +20,11 @@ class GroupController extends Controller {
 
   @override
   FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('/', authMiddleware.requireAuth);
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   Future<List<Group>> getAll(User authenticatedUser) async {
     final q = GroupQuery();
     // Restrict to public and authenticated user's groups
@@ -37,7 +38,7 @@ class GroupController extends Controller {
     return groups;
   }
 
-  @Expose('', method: 'POST', middleware: [parser.parseGroup])
+  @Expose('/', method: 'POST', middleware: [parser.parseGroup])
   Future<Group> createGroup(Group group, User authenticatedUser) async {
     final query = GroupQuery();
 //      ..values = group

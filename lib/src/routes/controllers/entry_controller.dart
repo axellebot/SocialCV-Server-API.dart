@@ -20,10 +20,11 @@ class EntryController extends Controller {
 
   @override
   FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('/', authMiddleware.requireAuth);
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   Future<List<Entry>> getAll(User authenticatedUser) async {
     final q = EntryQuery()
       // Restrict to public and authenticated user's entries
@@ -34,7 +35,7 @@ class EntryController extends Controller {
     return entries;
   }
 
-  @Expose('', method: 'POST', middleware: [parser.parseEntry])
+  @Expose('/', method: 'POST', middleware: [parser.parseEntry])
   Future<Entry> createEntry(Entry entry, User authenticatedUser) async {
     final q = EntryQuery()..substitutionValues.addAll(entry.toJson());
 //      ..valueMap['owner_id'] = request.authorization.ownerID;

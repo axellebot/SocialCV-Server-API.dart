@@ -19,10 +19,11 @@ class IdentityController extends Controller {
 
   @override
   FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('/', authMiddleware.requireAuth);
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   Future<User> getIdentity(User authenticatedUser) async {
     final q = UserQuery()..where.id.equals(authenticatedUser.id);
 

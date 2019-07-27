@@ -20,10 +20,11 @@ class ProfileController extends Controller {
 
   @override
   FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('/', authMiddleware.requireAuth);
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   FutureOr<List<Profile>> getAll(User authenticatedUser) async {
     final query = ProfileQuery();
 //      // Restrict to public and authenticated user's profiles
@@ -37,7 +38,7 @@ class ProfileController extends Controller {
     return profiles;
   }
 
-  @Expose('', method: 'POST', middleware: [parser.parseProfile])
+  @Expose('/', method: 'POST', middleware: [parser.parseProfile])
   FutureOr<Profile> createProfile(
       Profile profile, User authenticatedUser) async {
     final q = ProfileQuery();

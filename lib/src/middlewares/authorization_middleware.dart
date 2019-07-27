@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_orm/angel_orm.dart';
-import 'package:meta/meta.dart';
 import 'package:social_cv_api/src/models/models.dart';
 
 final _rgxBearer = RegExp(r'^[Bb]earer ([^\n\s]+)$');
 
 class AuthorizationMiddleware {
-  const AuthorizationMiddleware({@required this.executor})
+  const AuthorizationMiddleware(this.executor)
       : assert(executor != null, 'No $QueryExecutor given');
 
   final QueryExecutor executor;

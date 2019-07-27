@@ -20,10 +20,11 @@ class UserController extends Controller {
 
   @override
   FutureOr<void> configureRoutes(Routable routable) {
+    routable.all('/', authMiddleware.requireAuth);
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   FutureOr<List<User>> getAll(User authenticatedUser) async {
     final q = UserQuery();
 //      // Only owner can access user

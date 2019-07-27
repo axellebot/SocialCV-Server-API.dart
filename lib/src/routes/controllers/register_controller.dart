@@ -13,7 +13,7 @@ class RegisterController extends Controller {
   RegisterController(this.executor)
       : assert(executor != null, 'No $QueryExecutor given');
 
-  @Expose('', method: 'POST', middleware: [parser.parseUser])
+  @Expose('/', method: 'POST', middleware: [parser.parseUser])
   FutureOr<User> createUser(User user, User authenticatedUser) async {
     // Check for required parameters before we spend time hashing
     if (user.username == null || user.password == null) {

@@ -23,7 +23,7 @@ class PartController extends Controller {
     routable.all('*', authMiddleware.requireAuth);
   }
 
-  @Expose('', method: 'GET')
+  @Expose('/', method: 'GET')
   Future<List<Part>> getAll(User authenticatedUser) async {
     final q = PartQuery();
     // Restrict to public and authenticated user's groups
@@ -37,7 +37,7 @@ class PartController extends Controller {
     return parts;
   }
 
-  @Expose('', method: 'POST', middleware: [parser.parsePart])
+  @Expose('/', method: 'POST', middleware: [parser.parsePart])
   Future<Part> createPart(Part part, User authenticatedUser) async {
     final q = PartQuery();
 //      ..values = part
